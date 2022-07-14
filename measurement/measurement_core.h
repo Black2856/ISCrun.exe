@@ -2,12 +2,14 @@
 #include "dataIO.h"
 #include "ev3f.h"
 #include "calibration.h"
+#include "vector.h"
 
 class MeasurementCore{ //計測系のSingleton管理クラス
 public:
     static MeasurementCore* getInstance();
     void sensorOutput();
     Calibration calibration;
+    Vector vector;
     
 private:
     MeasurementCore();

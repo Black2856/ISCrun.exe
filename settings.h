@@ -22,5 +22,9 @@
 #define ORDER_T 20
 #define BLUETOOTH_T 100
 
+//走行体情報
+#define WHEEL 5 //車輪半径(cm)
+#define BETWHEENWHEEL 15 //車輪間距離(cm)
+
 #define SETTINGS_H
 #endif

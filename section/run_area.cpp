@@ -48,6 +48,7 @@ void Section00::condition(){
 ////////////////////////////////////////////////////////////////キャリブレーション
 void Section01::entry(){
     control->run.setParam(6,-100,0,0);
+    measurementCore->vector.setRotateOffset();
 }
 
 void Section01::main(){
@@ -56,7 +57,7 @@ void Section01::main(){
 }
 
 void Section01::condition(){
-    if((int)ev3->rightWheel.getCount() > 1350/2){
+    if(measurementCore->vector.getAngle() < -450){
         brightnessData = measurementCore->calibration.getBrightnessData(10);
         //printf("%d,%d,%d\n",brightnessData.max,brightnessData.min,brightnessData.avg);
         dataIO->addData("max", (int)brightnessData.max);
@@ -101,6 +102,7 @@ void Section03::condition(){
 ////////////////////////////////////////////////////////////////走行エリア
 void Section04::entry(){
     control->pid.setPID(1.5,0,0.15); //シミュレータ2.4 0 0.4
+    measurementCore->vector.setRotateOffset();
 }
 
 void Section04::main(){
@@ -108,6 +110,9 @@ void Section04::main(){
     control->run.setParam(100,(int)fix,0,0);
     control->run.update();
 
+    measurementCore->vector.addAnglerVelocity(ev3->gyroSensor.getAnglerVelocity());
+    //printf("%f, %f\n",measurementCore->vector.getStable(10), measurementCore->vector.getRotate(10));
+    //printf("%f, %f\n",measurementCore->vector.getScalar(), measurementCore->vector.getAngle());
     dataIO->addData("fix", (int)fix);
     measurementCore->sensorOutput();
 }
