@@ -15,7 +15,7 @@ MeasurementCore* MeasurementCore::getInstance(){
 }
 
 void MeasurementCore::sensorOutput(){
-    rgb_raw_t rgb_val;
+    //rgb_raw_t rgb_val;
     //ev3->colorSensor.getRawColor(rgb_val);
     dataIO->addData("brightness", (int)ev3->colorSensor.getBrightness());
     //dataIO->addData("ambient", (int)ev3->colorSensor.getAmbient());
@@ -23,8 +23,8 @@ void MeasurementCore::sensorOutput(){
     //dataIO->addData("G", (int)rgb_val.g);
     //dataIO->addData("B", (int)rgb_val.b);
 
-    dataIO->addData("Angle", (int)ev3->gyroSensor.getAngle());
-    dataIO->addData("AnglerVelocity", (int)ev3->gyroSensor.getAnglerVelocity());
+    //dataIO->addData("Angle", (int)ev3->GyroSensor_getAngle());
+    //dataIO->addData("AnglerVelocity", (int)ev3->gyroSensor.getAnglerVelocity());
 
     dataIO->addData("leftdeg", (int)ev3->leftWheel.getCount());
     dataIO->addData("rightdeg", (int)ev3->rightWheel.getCount());

@@ -23,6 +23,8 @@ public:
 
   Clock clock;
 
+  int16_t GyroSensor_getAngle();
+
 private:
     EV3();
     ~EV3();

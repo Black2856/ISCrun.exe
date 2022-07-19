@@ -57,7 +57,7 @@ void Section01::main(){
 }
 
 void Section01::condition(){
-    if(measurementCore->vector.getAngle() < -450){
+    if(ev3->GyroSensor_getAngle() >= 450){
         brightnessData = measurementCore->calibration.getBrightnessData(10);
         //printf("%d,%d,%d\n",brightnessData.max,brightnessData.min,brightnessData.avg);
         dataIO->addData("max", (int)brightnessData.max);
@@ -103,17 +103,28 @@ void Section03::condition(){
 void Section04::entry(){
     control->pid.setPID(1.5,0,0.15); //シミュレータ2.4 0 0.4
     measurementCore->vector.setRotateOffset();
+    measurementCore->vector.resetAnglerVelocity();
 }
 
 void Section04::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(100,(int)fix,0,0);
+    if(measurementCore->vector.getStable(10)){
+
+    }
+    //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8,(int)fix,0,0);
+    control->run.setParam(100, (int)fix, 0, 0);
     control->run.update();
 
-    measurementCore->vector.addAnglerVelocity(ev3->gyroSensor.getAnglerVelocity());
+    measurementCore->vector.addAnglerVelocity();
     //printf("%f, %f\n",measurementCore->vector.getStable(10), measurementCore->vector.getRotate(10));
     //printf("%f, %f\n",measurementCore->vector.getScalar(), measurementCore->vector.getAngle());
     dataIO->addData("fix", (int)fix);
+    dataIO->addData("stable1", measurementCore->vector.getStable(1));
+    dataIO->addData("stable5", measurementCore->vector.getStable(5));
+    dataIO->addData("stable10", measurementCore->vector.getStable(10));
+    dataIO->addData("stable20", measurementCore->vector.getStable(20));
+    //dataIO->addData("rotate", measurementCore->vector.getRotate(10));
+    dataIO->addData("Angle", measurementCore->vector.getAngle());
     measurementCore->sensorOutput();
 }
 

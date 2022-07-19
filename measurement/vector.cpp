@@ -3,15 +3,18 @@
 
 using namespace std;
 
-void Vector::addAnglerVelocity(const int16_t anglerVelocity){
+void Vector::addAnglerVelocity(){
   if((int8_t)aryAnglerVelocity.size() >= maxAry){
-    aryAnglerVelocity.erase(aryAnglerVelocity.begin());
+    aryAnglerVelocity.pop_back();
   }
-  aryAnglerVelocity.push_front(anglerVelocity);
+  int16_t nowAnglerVelocity = ev3->GyroSensor_getAngle();
+  aryAnglerVelocity.push_front((float)(nowAnglerVelocity - this->anglerVelocity));
+  this->anglerVelocity = nowAnglerVelocity;
 }
 
 void Vector::resetAnglerVelocity(){
   aryAnglerVelocity.clear();
+  this->anglerVelocity = ev3->GyroSensor_getAngle();
 }
 
 float Vector::getStable(const int idx){
@@ -25,11 +28,11 @@ float Vector::getStable(const int idx){
     stable += pow(*itr, 2);
     itr++;
   }
-  sqrt(stable);
   if(stable == 0){
     return 0;
   }
-  return stable / idx;
+  stable = sqrt(stable);
+  return (stable / idx) * (float)(1000 / ORDER_T);
 }
 
 float Vector::getRotate(const int idx){
@@ -48,22 +51,22 @@ float Vector::getRotate(const int idx){
   if(rotate == 0){
     return 0;
   }
-  return rotate / 2;
+  return rotate;
 }
 
 void Vector::setRotateOffset(const int32_t left, const int32_t right){
-  this->leftOffset = left;
-  this->rightOffset = right;
+  this->offset[0] = left;
+  this->offset[1] = right;
 }
 
 void Vector::setRotateOffset(){
-  this->leftOffset = ev3->leftWheel.getCount();
-  this->rightOffset = ev3->rightWheel.getCount();
+  this->offset[0] = ev3->leftWheel.getCount();
+  this->offset[1] = ev3->rightWheel.getCount();
 }
 
 float Vector::getScalar(){
-  int32_t left = ev3->leftWheel.getCount() - this->leftOffset;
-  int32_t right = ev3->rightWheel.getCount() - this->rightOffset;
+  int32_t left = ev3->leftWheel.getCount() - this->offset[0];
+  int32_t right = ev3->rightWheel.getCount() - this->offset[1];
   float scalar = 0;
   if(left < right){
     scalar = (float)(right - left) / 2 + left;
@@ -79,11 +82,11 @@ float Vector::getScalar(){
 }
 
 float Vector::getAngle(){
-  int32_t left = ev3->leftWheel.getCount() - this->leftOffset;
-  int32_t right = ev3->rightWheel.getCount() - this->rightOffset;
+  int32_t left = ev3->leftWheel.getCount() - this->offset[0];
+  int32_t right = ev3->rightWheel.getCount() - this->offset[1];
   float angle = 0;
 
-  angle = (float)(left - right);
+  angle = (float)(right - left);
   angle = angle / 3;
 
   return angle;
