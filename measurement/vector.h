@@ -8,6 +8,8 @@ using namespace std;
 
 class Vector{
 public:
+  Vector();
+
   void addAnglerVelocity(); //角速度をリストに追加する
   void resetAnglerVelocity(); //角速度リストを初期化
   float getStable(const int idx); //現時点からidxまでの安定度(各速度の標準偏差)を返す

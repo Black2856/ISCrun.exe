@@ -3,6 +3,7 @@
 #include "ev3f.h"
 #include "calibration.h"
 #include "vector.h"
+#include "curve.h"
 
 class MeasurementCore{ //計測系のSingleton管理クラス
 public:
@@ -10,6 +11,7 @@ public:
     void sensorOutput();
     Calibration calibration;
     Vector vector;
+    Curve curve;
     
 private:
     MeasurementCore();

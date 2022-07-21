@@ -12,6 +12,7 @@ APPL_CXXOBJS += \
 	run.o \
 	measurement_core.o \
 	calibration.o \
+	curve.o \
 	vector.o \
 	dataIO.o
 SRCLANG := c++

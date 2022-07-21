@@ -6,6 +6,7 @@ enum class SectionList{
     Section02,
     Section03,
     Section04,
+    Section05,
     Section99 = 99
 };
 

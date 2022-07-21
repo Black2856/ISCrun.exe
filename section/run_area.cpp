@@ -64,6 +64,9 @@ void Section01::condition(){
         dataIO->addData("min", (int)brightnessData.min);
         dataIO->addData("avg", (int)brightnessData.avg);
         dataIO->addData("gain", (float)brightnessData.gain);
+        brightnessData.avg = 17;
+        brightnessData.max = 31;
+        brightnessData.min = 3;
         control->run.setParam(0,0,0,0);
         control->run.update();
         transition((int)SectionList::Section02);
@@ -101,34 +104,51 @@ void Section03::condition(){
 }
 ////////////////////////////////////////////////////////////////走行エリア
 void Section04::entry(){
-    control->pid.setPID(1.5,0,0.15); //シミュレータ2.4 0 0.4
+    measurementCore->curve.resetCurve();
+    control->pid.setPID(1.5,0,0.12); //シミュレータ2.4 0 0.4
     measurementCore->vector.setRotateOffset();
     measurementCore->vector.resetAnglerVelocity();
 }
 
 void Section04::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    if(measurementCore->vector.getStable(10)){
-
-    }
-    //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8,(int)fix,0,0);
-    control->run.setParam(100, (int)fix, 0, 0);
+    //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8, (int)fix, 0, 0);
+    control->run.setParam(100, -(int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
-    //printf("%f, %f\n",measurementCore->vector.getStable(10), measurementCore->vector.getRotate(10));
-    //printf("%f, %f\n",measurementCore->vector.getScalar(), measurementCore->vector.getAngle());
     dataIO->addData("fix", (int)fix);
-    dataIO->addData("stable1", measurementCore->vector.getStable(1));
-    dataIO->addData("stable5", measurementCore->vector.getStable(5));
     dataIO->addData("stable10", measurementCore->vector.getStable(10));
-    dataIO->addData("stable20", measurementCore->vector.getStable(20));
+    measurementCore->curve.updateCurve(brightnessData, fix);
+    dataIO->addData("curve", measurementCore->curve.getCurve());
     //dataIO->addData("rotate", measurementCore->vector.getRotate(10));
     dataIO->addData("Angle", measurementCore->vector.getAngle());
     measurementCore->sensorOutput();
 }
 
 void Section04::condition(){
+    if(abs(measurementCore->curve.getCurve()) > 30000){
+        transition((int)SectionList::Section05);
+    }
+}
+////////////////////////////////////////////////////////////////
+void Section05::entry(){
+    measurementCore->curve.resetCurve();
+    control->pid.setPID(2.0,0,0.2);
+}
+
+void Section05::main(){
+    float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
+    control->run.setParam(40, -(int)fix, 1500 * 1000, 0);
+    control->run.update();
+    measurementCore->vector.addAnglerVelocity();
+    measurementCore->curve.updateCurve(brightnessData, fix);
+}
+
+void Section05::condition(){
+    if(abs(measurementCore->curve.getCurve()) < 3000){
+        transition((int)SectionList::Section04);
+    }
 }
 ////////////////////////////////////////////////////////////////
 

@@ -2,6 +2,7 @@
 #include "settings.h"
 #include "stdint.h"
 #include "section.h"
+#include <cmath>
 
 class Section99 : public Section{
 public:
@@ -55,6 +56,15 @@ public:
     void condition() override;
 private:
     static const uint16_t section = 4;
+};
+
+class Section05 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const uint16_t section = 5;
 };
 
 #define RUN_AREA_H

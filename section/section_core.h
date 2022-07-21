@@ -27,13 +27,15 @@ private:
   Section02 section02;
   Section03 section03;
   Section04 section04;
+  Section05 section05;
   Section99 section99;
-  Section *p_section[6] = {
+  Section *p_section[7] = {
     &section00,
     &section01,
     &section02,
     &section03,
     &section04,
+    &section05,
     &section99
   };
 };

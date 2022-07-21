@@ -3,6 +3,10 @@
 
 using namespace std;
 
+Vector::Vector(){
+  resetAnglerVelocity();
+}
+
 void Vector::addAnglerVelocity(){
   if((int8_t)aryAnglerVelocity.size() >= maxAry){
     aryAnglerVelocity.pop_back();
