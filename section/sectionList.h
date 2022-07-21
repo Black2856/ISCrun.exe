@@ -1,13 +1,13 @@
 #ifndef SECTIONLIST_H
 
 enum class SectionList{
-    Section00 = 0,
+    Section99 = 0,
+    Section00,
     Section01,
     Section02,
     Section03,
     Section04,
-    Section05,
-    Section99 = 99
+    Section05
 };
 
 #define SECTIONLIST_H

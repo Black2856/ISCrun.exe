@@ -1,7 +1,7 @@
 #include "section.h"
 
-uint16_t Section::running(uint16_t currentSection){
-  this->currentSection = currentSection;
+SectionList Section::running(const SectionList sectionID){
+  this->currentSection = sectionID;
   if(sectionEntry == false){
     sectionEntry = true;
     clock.reset();
@@ -12,7 +12,7 @@ uint16_t Section::running(uint16_t currentSection){
   return this->currentSection;
 }
 
-void Section::transition(const uint16_t sectionID){
+void Section::transition(const SectionList sectionID){
   clock.reset();
   sectionEntry = false;
   this->currentSection = sectionID;

@@ -21,6 +21,7 @@ void Section99::entry(){
     control->run.update();
     ev3->leftWheel.stop();
     ev3->rightWheel.stop();
+    dataIO->addData("end", "end");
 }
 
 void Section99::main(){
@@ -31,6 +32,7 @@ void Section99::condition(){
 
 ////////////////////////////////////////////////////////////////開始待ち
 void Section00::entry(){
+    tslp_tsk(1000 * 1000); //初期化待ち
     control->run.setParam(5,-100,0,0);
 }
 
@@ -42,7 +44,7 @@ void Section00::condition(){
     if((int)ev3->rightWheel.getCount() > 1){
         control->run.setParam(0,0,0,0);
         control->run.update();
-        transition((int)SectionList::Section01);
+        transition(SectionList::Section01);
     }
 }
 ////////////////////////////////////////////////////////////////キャリブレーション
@@ -64,12 +66,9 @@ void Section01::condition(){
         dataIO->addData("min", (int)brightnessData.min);
         dataIO->addData("avg", (int)brightnessData.avg);
         dataIO->addData("gain", (float)brightnessData.gain);
-        brightnessData.avg = 17;
-        brightnessData.max = 31;
-        brightnessData.min = 3;
         control->run.setParam(0,0,0,0);
         control->run.update();
-        transition((int)SectionList::Section02);
+        transition(SectionList::Section02);
     }
 }
 ////////////////////////////////////////////////////////////////キャリブレーション
@@ -87,7 +86,7 @@ void Section02::condition(){
     if((int)ev3->colorSensor.getBrightness() == brightnessData.avg){
         control->run.setParam(0,0,0,0);
         control->run.update();
-        transition((int)SectionList::Section03);
+        transition(SectionList::Section03);
     }
 }
 ////////////////////////////////////////////////////////////////キャリブレーション
@@ -99,7 +98,7 @@ void Section03::main(){
 
 void Section03::condition(){
     if(ev3->touchSensor.isPressed()){
-        transition((int)SectionList::Section04);
+        transition(SectionList::Section04);
     }
 }
 ////////////////////////////////////////////////////////////////走行エリア
@@ -128,10 +127,11 @@ void Section04::main(){
 
 void Section04::condition(){
     if(abs(measurementCore->curve.getCurve()) > 30000){
-        transition((int)SectionList::Section05);
+        transition(SectionList::Section05);
     }
 }
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////走行エリア
+
 void Section05::entry(){
     measurementCore->curve.resetCurve();
     control->pid.setPID(2.0,0,0.2);
@@ -147,9 +147,10 @@ void Section05::main(){
 
 void Section05::condition(){
     if(abs(measurementCore->curve.getCurve()) < 3000){
-        transition((int)SectionList::Section04);
+        transition(SectionList::Section04);
     }
 }
+
 ////////////////////////////////////////////////////////////////
 
 

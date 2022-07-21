@@ -2,7 +2,7 @@
 #include "settings.h"
 #include "stdint.h"
 #include "section.h"
-#include <cmath>
+#include "sectionList.h"
 
 class Section99 : public Section{
 public:
@@ -10,7 +10,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 99;
+    static const SectionList section = SectionList::Section99;
 };
 
 class Section00 : public Section{
@@ -19,7 +19,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 0;
+    static const SectionList section = SectionList::Section00;
 };
 
 class Section01 : public Section{
@@ -28,7 +28,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 1;
+    static const SectionList section = SectionList::Section01;
 };
 
 class Section02 : public Section{
@@ -37,7 +37,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 2;
+    static const SectionList section = SectionList::Section02;
 };
 
 class Section03 : public Section{
@@ -46,7 +46,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 3;
+    static const SectionList section = SectionList::Section03;
 };
 
 class Section04 : public Section{
@@ -55,7 +55,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 4;
+    static const SectionList section = SectionList::Section04;
 };
 
 class Section05 : public Section{
@@ -64,7 +64,7 @@ public:
     void entry() override;
     void condition() override;
 private:
-    static const uint16_t section = 5;
+    static const SectionList section = SectionList::Section05;
 };
 
 #define RUN_AREA_H
