@@ -104,7 +104,7 @@ void Section03::condition(){
 ////////////////////////////////////////////////////////////////走行エリア
 void Section04::entry(){
     measurementCore->curve.resetCurve();
-    control->pid.setPID(1.5,0,0.12); //シミュレータ2.4 0 0.4
+    control->pid.setPID(2.5,0,0.12); //シミュレータ2.4 0 0.4
     measurementCore->vector.setRotateOffset();
     measurementCore->vector.resetAnglerVelocity();
 }
@@ -112,7 +112,7 @@ void Section04::entry(){
 void Section04::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
     //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8, (int)fix, 0, 0);
-    control->run.setParam(100, -(int)fix, 0, 0);
+    control->run.setParam(100, (int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
@@ -126,7 +126,7 @@ void Section04::main(){
 }
 
 void Section04::condition(){
-    if(abs(measurementCore->curve.getCurve()) > 30000){
+    if(abs(measurementCore->curve.getCurve()) > 50000){
         transition(SectionList::Section05);
     }
 }
@@ -134,12 +134,12 @@ void Section04::condition(){
 
 void Section05::entry(){
     measurementCore->curve.resetCurve();
-    control->pid.setPID(2.0,0,0.2);
+    control->pid.setPID(1.0,0.1,0.08);
 }
 
 void Section05::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(40, -(int)fix, 1500 * 1000, 0);
+    control->run.setParam(30, (int)fix, 1500 * 1000, 1);
     control->run.update();
     measurementCore->vector.addAnglerVelocity();
     measurementCore->curve.updateCurve(brightnessData, fix);
