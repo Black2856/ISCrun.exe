@@ -45,20 +45,31 @@ void Run::steeringB(float &rightSteering, float &leftSteering){
 }
 
 void Run::setParam(RunParam runParam){
-    this->lastRunParam = this->runParam;
-    this->runParam = runParam;
-    if(!(runParam.PWM == lastRunParam.PWM && runParam.transitionTime == lastRunParam.transitionTime)){
+    if(!(this->runParam.PWM == runParam.PWM && this->runParam.transitionTime == runParam.transitionTime)){
         clock.reset();
+        this->lastRunParam = this->runParam;
+        this->runParam.PWM = runParam.PWM;
+    }else{
+        this->lastRunParam.steering = this->runParam.steering;
+        this->lastRunParam.steeringType = this->runParam.steeringType;
+        this->lastRunParam.transitionTime = this->runParam.transitionTime;
     }
+    this->runParam.steering = runParam.steering;
+    this->runParam.transitionTime = runParam.transitionTime;
+    this->runParam.steeringType = runParam.steeringType;
 }
 
 void Run::setParam(int PWM, int steering, uint64_t transitionTime, uint8_t steeringType){
-    this->lastRunParam = this->runParam;
-    this->runParam.PWM = PWM;
+    if(!(this->runParam.PWM == PWM && this->runParam.transitionTime == transitionTime)){
+        clock.reset();
+        this->lastRunParam = this->runParam;
+        this->runParam.PWM = PWM;
+    }else{
+        this->lastRunParam.steering = this->runParam.steering;
+        this->lastRunParam.steeringType = this->runParam.steeringType;
+        this->lastRunParam.transitionTime = this->runParam.transitionTime;
+    }
     this->runParam.steering = steering;
     this->runParam.transitionTime = transitionTime;
     this->runParam.steeringType = steeringType;
-    if(!(runParam.PWM == lastRunParam.PWM && runParam.transitionTime == lastRunParam.transitionTime)){
-        clock.reset();
-    }
 }
