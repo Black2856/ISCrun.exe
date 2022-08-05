@@ -67,5 +67,32 @@ private:
     static const SectionList section = SectionList::Section05;
 };
 
+class Section06 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const SectionList section = SectionList::Section06;
+};
+
+class Section07 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const SectionList section = SectionList::Section07;
+};
+
+class Section08 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const SectionList section = SectionList::Section08;
+};
+
 #define RUN_AREA_H
 #endif

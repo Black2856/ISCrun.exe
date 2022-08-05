@@ -44,6 +44,12 @@ void Section00::condition(){
     if((int)ev3->rightWheel.getCount() > 1){
         control->run.setParam(0,0,0,0);
         control->run.update();
+/*
+        brightnessData.max = 35;
+        brightnessData.min = 4;
+        brightnessData.avg = 19;
+        brightnessData.gain = 1.064516;
+*/
         transition(SectionList::Section01);
     }
 }
@@ -66,6 +72,7 @@ void Section01::condition(){
         dataIO->addData("min", (int)brightnessData.min);
         dataIO->addData("avg", (int)brightnessData.avg);
         dataIO->addData("gain", (float)brightnessData.gain);
+
         control->run.setParam(0,0,0,0);
         control->run.update();
         transition(SectionList::Section02);
@@ -104,7 +111,7 @@ void Section03::condition(){
 ////////////////////////////////////////////////////////////////走行エリア
 void Section04::entry(){
     measurementCore->curve.resetCurve();
-    control->pid.setPID(2.5,0,0.14); //シミュレータ2.4 0 0.4
+    control->pid.setPID(1.5,0,0.15); //シミュレータ2.4 0 0.4
     measurementCore->vector.setRotateOffset();
     measurementCore->vector.resetAnglerVelocity();
 }
@@ -112,7 +119,7 @@ void Section04::entry(){
 void Section04::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
     //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8, (int)fix, 0, 0);
-    control->run.setParam(80, (int)fix, 0, 0);
+    control->run.setParam(100, (int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
@@ -123,10 +130,11 @@ void Section04::main(){
     //dataIO->addData("rotate", measurementCore->vector.getRotate(10));
     dataIO->addData("Angle", measurementCore->vector.getAngle());
     measurementCore->sensorOutput();
+    dataIO->addData("Scalar", measurementCore->vector.getScalar());
 }
 
 void Section04::condition(){
-    if(abs(measurementCore->curve.getCurve()) > 100000){
+    if(measurementCore->vector.getScalar() > 85){
         transition(SectionList::Section05);
     }
 }
@@ -134,25 +142,90 @@ void Section04::condition(){
 
 void Section05::entry(){
     measurementCore->curve.resetCurve();
-    control->pid.setPID(1.0,0,0.1);
+    measurementCore->vector.setRotateOffset();
+    control->pid.setPID(1.2,0,0.1);
 }
 
 void Section05::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(30, (int)fix, 1500 * 1000, 1);
+    control->run.setParam(30, (int)fix, 500 * 1000, 1);
     control->run.update();
+    measurementCore->sensorOutput();
+    dataIO->addData("Scalar", measurementCore->vector.getScalar());
     measurementCore->vector.addAnglerVelocity();
     measurementCore->curve.updateCurve(brightnessData, fix);
 }
 
 void Section05::condition(){
-    if(abs(measurementCore->curve.getCurve()) < 3000){
-        transition(SectionList::Section04);
+    if(abs(measurementCore->curve.getCurve() < 2500) && measurementCore->vector.getScalar() > 65){
+        transition(SectionList::Section06);
     }
 }
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////走行エリア
+void Section06::entry(){
+    measurementCore->curve.resetCurve();
+    control->pid.setPID(1.5,0,0.15);
+    measurementCore->vector.setRotateOffset();
+    measurementCore->vector.resetAnglerVelocity();
+}
 
+void Section06::main(){
+    float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
+    control->run.setParam(100, (int)fix, 0, 0);
+    control->run.update();
+
+    measurementCore->vector.addAnglerVelocity();
+}
+
+void Section06::condition(){
+    if(measurementCore->vector.getScalar() > 115){
+        transition(SectionList::Section07);
+    }
+}
+
+////////////////////////////////////////////////////////////////走行エリア
+
+void Section07::entry(){
+    measurementCore->curve.resetCurve();
+    measurementCore->vector.setRotateOffset();
+    control->pid.setPID(1.0,0,0.1);
+}
+
+void Section07::main(){
+    float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
+    control->run.setParam(30, (int)fix, 500 * 1000, 1);
+    control->run.update();
+}
+
+void Section07::condition(){
+    if(abs(measurementCore->curve.getCurve() < 2500) && measurementCore->vector.getScalar() > 65){
+        transition(SectionList::Section08);
+    }
+}
+
+////////////////////////////////////////////////////////////////走行エリア
+
+void Section08::entry(){
+    measurementCore->curve.resetCurve();
+    control->pid.setPID(1.5,0,0.15);
+    measurementCore->vector.setRotateOffset();
+    measurementCore->vector.resetAnglerVelocity();
+}
+
+void Section08::main(){
+    float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
+    control->run.setParam(100, (int)fix, 0, 0);
+    control->run.update();
+
+    measurementCore->vector.addAnglerVelocity();
+}
+
+void Section08::condition(){
+    if(measurementCore->vector.getScalar() > 100){
+        transition(SectionList::Section99);
+    }
+}
 
 /*
 void Section99::entry(){
