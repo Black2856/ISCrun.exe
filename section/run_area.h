@@ -94,5 +94,23 @@ private:
     static const SectionList section = SectionList::Section08;
 };
 
+class Section20 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const SectionList section = SectionList::Section20;
+};
+
+class Section21 : public Section{
+public:
+    void main() override;
+    void entry() override;
+    void condition() override;
+private:
+    static const SectionList section = SectionList::Section21;
+};
+
 #define RUN_AREA_H
 #endif

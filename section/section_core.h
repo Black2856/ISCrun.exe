@@ -34,7 +34,9 @@ private:
   Section06 section06;
   Section07 section07;
   Section08 section08;
-  Section *p_section[10] = {
+  Section20 section20;
+  Section21 section21;
+  Section *p_section[12] = {
     &section99,
     &section00,
     &section01,
@@ -44,7 +46,9 @@ private:
     &section05,
     &section06,
     &section07,
-    &section08
+    &section08,
+    &section20,
+    &section21
   };
 };
 

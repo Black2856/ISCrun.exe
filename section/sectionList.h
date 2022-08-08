@@ -10,7 +10,9 @@ enum class SectionList{
     Section05,
     Section06,
     Section07,
-    Section08
+    Section08,
+    Section20,
+    Section21
 };
 
 #define SECTIONLIST_H
