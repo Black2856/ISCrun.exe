@@ -20,7 +20,7 @@ EV3* EV3::getInstance(){
     return m_EV3;
 }
 
-int16_t EV3::GyroSensor_getAngle(){
+int16_t EV3::GyroSensor_getAngle(){ //シミュレーション用と実機で数値が変わるのでそれに対応
     #if SIM == true
     return -gyroSensor.getAngle();
     #else

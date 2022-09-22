@@ -4,9 +4,9 @@
 #include "calibration.h"
 #include <cmath>
 
-class Curve{
+class Curve{ //走行体の安定度を返す (直進しているほど0に近くなる)
 public:
-  void updateCurve(BrightnessData brightnessData, float fix);
+  void updateCurve(BrightnessData brightnessData, float fix); //計算
   float getCurve();
   void resetCurve();
 

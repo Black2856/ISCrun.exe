@@ -3,14 +3,16 @@
 #include "ev3f.h"
 #include "calibration.h"
 #include "vector.h"
+#include "color.h"
 #include "curve.h"
 
 class MeasurementCore{ //計測系のSingleton管理クラス
 public:
     static MeasurementCore* getInstance();
-    void sensorOutput();
+    void sensorOutput();//各種情報の出力をまとめる関数
     Calibration calibration;
     Vector vector;
+    Color color;
     Curve curve;
     
 private:

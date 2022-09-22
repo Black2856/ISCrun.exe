@@ -16,7 +16,7 @@ class Calibration{
 public:
     Calibration();
     ~Calibration();
-    void addBrightness();
+    void addBrightness();//反射光の標本データを追加
     BrightnessData getBrightnessData(const int8_t idx);//idx : 上位%の値をminMaxに入れるか
     float getCorrectionVal(int8_t brightness, BrightnessData brightnessData);//シュミレータ環境値に変換
 private:

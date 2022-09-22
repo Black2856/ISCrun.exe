@@ -13,7 +13,7 @@ bool SectionCore::run(){
     terminate = true;
   }
 
-  currentSection = p_section[(int)currentSection]->running(currentSection);
+  currentSection = p_section[(int)currentSection]->running(currentSection); //区画の実行
   dataIO->dataOutput("data.csv");
 
   return terminate;

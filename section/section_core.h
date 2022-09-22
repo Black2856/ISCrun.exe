@@ -12,7 +12,7 @@
 
 class SectionCore{
 public:
-  SectionCore(const SectionList sectionID);
+  SectionCore(const SectionList sectionID);//インスタンス時に実行する区画を入れる
   bool run();
 
 private:
@@ -36,7 +36,24 @@ private:
   Section08 section08;
   Section20 section20;
   Section21 section21;
-  Section *p_section[12] = {
+  Section30 section30;
+  Section31 section31;
+  Section32 section32;
+  Section33 section33;
+  Section34 section34;
+  Section35 section35;
+  Section36 section36;
+  Section37 section37;
+  Section38 section38;
+  Section39 section39;
+  Section40 section40;
+  Section41 section41;
+  Section42 section42;
+  Section43 section43;
+  Section44 section44;
+  Section80 section80;
+  Section98 section98;
+  Section *p_section[29] = {
     &section99,
     &section00,
     &section01,
@@ -48,7 +65,24 @@ private:
     &section07,
     &section08,
     &section20,
-    &section21
+    &section21,
+    &section30,
+    &section31,
+    &section32,
+    &section33,
+    &section34,
+    &section35,
+    &section36,
+    &section37,
+    &section38,
+    &section39,
+    &section40,
+    &section41,
+    &section42,
+    &section43,
+    &section44,
+    &section80,
+    &section98
   };
 };
 
