@@ -1,5 +1,6 @@
 #include "section_core.h"
 #include "stdio.h"
+#include "settings.h"
 
 using namespace ev3api;
 
@@ -14,7 +15,9 @@ bool SectionCore::run(){
   }
 
   currentSection = p_section[(int)currentSection]->running(currentSection); //区画の実行
-  dataIO->dataOutput("data.csv");
+  if(DEBUG == true){
+    dataIO->dataOutput("data.csv");
+  }
 
   return terminate;
 }

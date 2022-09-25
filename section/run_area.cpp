@@ -307,11 +307,9 @@ void Section21::condition(){
 void Section99::entry(){
     //printf("entry99 ");
 }
-
 void Section99::main(){
     //printf("main99 ");
 }
-
 void Section99::condition(){
     //printf("condition99 ");
     //printf("%u\n",clock.now());
@@ -358,6 +356,7 @@ void Section30::condition(){
 ////////////////////////////////////////////////////////////////端点サークルまで走行(PWM 30)
 
 void Section31::entry(){
+    measurementCore->color.reset();
     measurementCore->curve.resetCurve();
     measurementCore->vector.setRotateOffset();
     control->pid.setPID(1.0,0,0.1);

@@ -1,6 +1,6 @@
 #ifndef SETTINGS_H
 
-#define DEBUG false
+#define DEBUG true
 #define SIM false
 
 //ポート割り当て
