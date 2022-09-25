@@ -47,13 +47,13 @@ void Section00::condition(){
     if((int)ev3->rightWheel.getCount() > 1){
         control->run.setParam(0,0,0,0);
         control->run.update();
-
+/*
         brightnessData.max = 35;
         brightnessData.min = 4;
         brightnessData.avg = 19;
         brightnessData.gain = 1.064516;
-
-        transition(SectionList::Section03);
+*/
+        transition(SectionList::Section01);
     }
 }
 ////////////////////////////////////////////////////////////////キャリブレーション(情報取得中)
@@ -129,7 +129,7 @@ void Section03::condition(){
         measurementCore->vector.setRotateOffset();
         measurementCore->vector.resetAnglerVelocity();
         ev3->gyroSensor.reset();
-        transition(SectionList::Section08);
+        transition(SectionList::Section04);
     }
 }
 ////////////////////////////////////////////////////////////////走行エリア(PWM 100 直進)
