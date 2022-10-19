@@ -2,10 +2,17 @@
 #include "settings.h"
 #include "stdio.h"
 
+
 void PID::reset(){
   this->error[0] = 0;
   this->error[1] = 0;
   this->integral = 0;
+}
+
+void PID::reset(const int value){
+  this->error[0] = value;
+  this->error[1] = value;
+  this->integral = value;
 }
 
 float PID::execution(const float value, const float target){

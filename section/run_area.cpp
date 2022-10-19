@@ -63,7 +63,7 @@ void Section01::entry(){
 }
 
 void Section01::main(){
-    float fix = control->pid.execution(measurementCore->vector.getAngle(), 450 * ROTATE_CORRECTION + 5);
+    float fix = control->pid.execution(measurementCore->vector.getAngle(), -450 * ROTATE_CORRECTION - 5);
 
     if(fix >= 10){
         fix = 10;
@@ -76,7 +76,7 @@ void Section01::main(){
 }
 
 void Section01::condition(){
-    if(measurementCore->vector.getAngle() >= 450 * ROTATE_CORRECTION){
+    if(measurementCore->vector.getAngle() <= -450 * ROTATE_CORRECTION){
         brightnessData = measurementCore->calibration.getBrightnessData(10);
         //printf("%d,%d,%d\n",brightnessData.max,brightnessData.min,brightnessData.avg);
         dataIO->addData("max", (int)brightnessData.max);
@@ -101,7 +101,7 @@ void Section02::main(){
     }else if(fix <= -10){
         fix = -10;
     }
-    control->run.setParam(fix,100,0,0);
+    control->run.setParam(-fix,100,0,0);
     control->run.update();
 }
 
@@ -110,7 +110,7 @@ void Section02::condition(){
         control->run.setParam(0,0,0,0);
         control->run.update();
         returnSection = SectionList::Section03;
-        transition(SectionList::Section20);
+        transition(SectionList::Section03);
     }
 }
 ////////////////////////////////////////////////////////////////スタート待機
@@ -143,7 +143,7 @@ void Section04::entry(){
 void Section04::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
     //control->run.setParam(100 - measurementCore->vector.getStable(100) * 1.8, (int)fix, 0, 0);
-    control->run.setParam(100, (int)fix, 0, 0);
+    control->run.setParam(100, -(int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
@@ -171,7 +171,7 @@ void Section05::entry(){
 
 void Section05::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(30, (int)fix, 500 * 1000, 1);
+    control->run.setParam(30, -(int)fix, 500 * 1000, 1);
     control->run.update();
     dataIO->addData("Scalar", measurementCore->vector.getScalar());
     dataIO->addData("deg", ev3->GyroSensor_getAngle());
@@ -180,9 +180,9 @@ void Section05::main(){
 }
 
 void Section05::condition(){
-    if(abs(measurementCore->curve.getCurve() < 5000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() < -88){
+    if(abs(measurementCore->curve.getCurve() < 5000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() > 88){
         transition(SectionList::Section06);
-    }else if(abs(measurementCore->curve.getCurve() < 2000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() < -80){
+    }else if(abs(measurementCore->curve.getCurve() < 2000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() > 80){
         transition(SectionList::Section06);
     }
 /*
@@ -202,7 +202,7 @@ void Section06::entry(){
 
 void Section06::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(100, (int)fix, 0, 0);
+    control->run.setParam(100, -(int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
@@ -224,14 +224,14 @@ void Section07::entry(){
 
 void Section07::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(30, (int)fix, 500 * 1000, 1);
+    control->run.setParam(30, -(int)fix, 500 * 1000, 1);
     control->run.update();
 }
 
 void Section07::condition(){
-    if(abs(measurementCore->curve.getCurve() < 5000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() > 88){
+    if(abs(measurementCore->curve.getCurve() < 5000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() < -88){
         transition(SectionList::Section08);
-    }else if(abs(measurementCore->curve.getCurve() < 2000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() < 80){
+    }else if(abs(measurementCore->curve.getCurve() < 2000) && measurementCore->vector.getScalar() > 65 && measurementCore->vector.getAngle() < -80){
         transition(SectionList::Section08);
     }
 }
@@ -247,7 +247,7 @@ void Section08::entry(){
 
 void Section08::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(100, (int)fix, 0, 0);
+    control->run.setParam(100, -(int)fix, 0, 0);
     control->run.update();
 
     measurementCore->vector.addAnglerVelocity();
@@ -344,7 +344,7 @@ void Section30::entry(){
 
 void Section30::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(30, (int)fix, 500 * 1000, 1);
+    control->run.setParam(30, -(int)fix, 500 * 1000, 1);
     control->run.update();
 }
 
@@ -364,7 +364,7 @@ void Section31::entry(){
 
 void Section31::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(12, (int)fix, 500 * 1000, 1);
+    control->run.setParam(12, -(int)fix, 500 * 1000, 1);
     control->run.update();
 }
 
@@ -393,7 +393,7 @@ void Section32::entry(){
 }
 
 void Section32::main(){
-    float fix = control->pid.execution(measurementCore->vector.getAngle(), 45 * ROTATE_CORRECTION + 5);
+    float fix = control->pid.execution(measurementCore->vector.getAngle(), -45 * ROTATE_CORRECTION - 5);
 
     if(fix >= 8){
         fix = 8;
@@ -405,7 +405,7 @@ void Section32::main(){
 }
 
 void Section32::condition(){
-    if(measurementCore->vector.getAngle() >= 45 * ROTATE_CORRECTION){
+    if(measurementCore->vector.getAngle() <= -45 * ROTATE_CORRECTION){
         returnSection = SectionList::Section33;
         transition(SectionList::Section80);
     }
@@ -414,17 +414,17 @@ void Section32::condition(){
 void Section33::entry(){
     measurementCore->curve.resetCurve();
     measurementCore->vector.setRotateOffset();
-    control->pid.setPID(2.5, 0, 0.3);
+    control->pid.setPID(2.5, 0, 0.6);
 }
 
 void Section33::main(){
     float fix = control->pid.execution((float)measurementCore->calibration.getCorrectionVal(ev3->colorSensor.getBrightness(), brightnessData), SIM_AVG_BRIGHTNESS);
-    control->run.setParam(10, (int)fix, 500 * 1000, 0);
+    control->run.setParam(10, -(int)fix, 500 * 1000, 0);
     control->run.update();
 }
 
 void Section33::condition(){
-    if(measurementCore->vector.getScalar() > 15){
+    if(measurementCore->vector.getScalar() > 18){
         transition(SectionList::Section34);
     }
 }
@@ -452,7 +452,7 @@ void Section34::condition(){
     }else if(color == ColorList::yellow){
         hit = true;
     }
-    if(hit == true && clock.now() > ORDER_T * 4 * 1000){
+    if((hit == true && clock.now() > ORDER_T * 4 * 1000) || measurementCore->vector.getScalar() > 13){
         transition(SectionList::Section35);
     }
 }
@@ -483,7 +483,7 @@ void Section36::entry(){
 }
 
 void Section36::main(){
-    float fix = control->pid.execution(measurementCore->vector.getAngle(), 55 * ROTATE_CORRECTION + 5);
+    float fix = control->pid.execution(measurementCore->vector.getAngle(), -55 * ROTATE_CORRECTION - 5);
 
     if(fix >= 8){
         fix = 8;
@@ -495,7 +495,7 @@ void Section36::main(){
 }
 
 void Section36::condition(){
-    if(measurementCore->vector.getAngle() >= 55 * ROTATE_CORRECTION){
+    if(measurementCore->vector.getAngle() <= -55 * ROTATE_CORRECTION){
         returnSection = SectionList::Section37;
         transition(SectionList::Section80);
     }
@@ -541,7 +541,7 @@ void Section39::entry(){
 }
 
 void Section39::main(){
-    float fix = control->pid.execution(measurementCore->vector.getAngle(), 30 * ROTATE_CORRECTION + 5);
+    float fix = control->pid.execution(measurementCore->vector.getAngle(), -30 * ROTATE_CORRECTION - 5);
 
     if(fix >= 8){
         fix = 8;
@@ -553,7 +553,7 @@ void Section39::main(){
 }
 
 void Section39::condition(){
-    if(measurementCore->vector.getAngle() >= 30 * ROTATE_CORRECTION){
+    if(measurementCore->vector.getAngle() <= -30 * ROTATE_CORRECTION){
         transition(SectionList::Section03);
     }
 }

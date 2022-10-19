@@ -1,6 +1,6 @@
 #ifndef SETTINGS_H
 
-#define DEBUG true
+#define DEBUG false
 #define SIM false
 
 //ポート割り当て
@@ -28,7 +28,7 @@
 #define SECOND_THRESHHOLD 1.25
 #define BRIGHTNESS_THRESHHOLD 40 //0 ~ 255
 
-//動作周期
+//動作周期  
 #define ORDER_T 20
 #define BLUETOOTH_T 100
 
