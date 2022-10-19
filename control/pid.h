@@ -8,9 +8,10 @@ struct PIDparam{
 
 class PID{ //PID制御クラス
 public:
-  float execution(const float value, const float target);
-  float exclusive(const float val, const float min, const float max);
-  void setPID(const float KP, const float KI, const float KD);
+  void reset();//PIDの保存している値をリセット
+  float execution(const float value, const float target);// PIDの実行 value = 現在の値, target = 目標値
+  float exclusive(const float val, const float min, const float max);// valから最小、最大の値に抑える
+  void setPID(const float KP, const float KI, const float KD);  
   void setPID(const PIDparam pidparam);
   PIDparam getPID();
 private:
